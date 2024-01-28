@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ClientHandler {
+public class ClientHandler implements Runnable {
 
     private static final Set<ClientHandler> clients = new HashSet<>();
     private final Socket socket;
@@ -25,13 +25,13 @@ public class ClientHandler {
             outputStream = new DataOutputStream(socket.getOutputStream());
 
             clientName = inputStream.readUTF(); // Read client's name
-            sendToAll(clientName + " has joined the chat.");
+            sendToAll(clientName + " se ha unido a la charla.");
 
             String message;
             while ((message = inputStream.readUTF()) != null) {
                 if ("bye".equalsIgnoreCase(message)) {
                     clients.remove(this);
-                    sendToAll(clientName + " has left the chat.");
+                    sendToAll(clientName + "ha dejado el chat.");
                     break;
                 }
                 sendToAll("[" + clientName + "]: " + message);
@@ -57,5 +57,4 @@ public class ClientHandler {
             }
         }
     }
-
 }
